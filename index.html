@@ -1,0 +1,1253 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AeroFluxo — Pitch Deck | Feira de Empreendedorismo</title>
+  
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            deepBg: '#070B19',
+            cardBg: 'rgba(15, 23, 42, 0.65)',
+            cardBorder: 'rgba(255, 255, 255, 0.08)',
+            neonGreen: '#10B981',
+            neonGreenGlow: '#059669',
+            neonAmber: '#F59E0B',
+            neonCyan: '#06B6D4',
+            neonRed: '#EF4444',
+          },
+          animation: {
+            'pulse-subtle': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            'float': 'float 6s ease-in-out infinite',
+            'radar-sweep': 'sweep 8s linear infinite',
+          },
+          keyframes: {
+            float: {
+              '0%, 100%': { transform: 'translateY(0)' },
+              '50%': { transform: 'translateY(-8px)' },
+            },
+            sweep: {
+              '0%': { transform: 'rotate(0deg)' },
+              '100%': { transform: 'rotate(360deg)' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Estilos Globais & Reset */
+    * {
+      box-sizing: border-box;
+      user-select: none;
+    }
+    body {
+      background-color: #070B19;
+      color: #F8FAFC;
+      font-family: 'Inter', sans-serif;
+      overflow: hidden;
+      margin: 0;
+      padding: 0;
+      width: 100vw;
+      height: 100vh;
+    }
+
+    /* Glassmorphism customizado */
+    .glass-panel {
+      background: rgba(13, 20, 39, 0.72);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    }
+    .glass-card {
+      background: rgba(15, 25, 48, 0.6);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .glass-card:hover {
+      border-color: rgba(6, 182, 212, 0.4);
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5), 0 0 25px rgba(6, 182, 212, 0.15);
+      transform: translateY(-3px);
+    }
+
+    /* HUD Bounding Box Decorativa */
+    .hud-corners {
+      position: relative;
+    }
+    .hud-corners::before, .hud-corners::after {
+      content: '';
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      border-color: #06B6D4;
+      pointer-events: none;
+    }
+    .hud-corners::before {
+      top: -2px;
+      left: -2px;
+      border-top: 2px solid #06B6D4;
+      border-left: 2px solid #06B6D4;
+    }
+    .hud-corners::after {
+      bottom: -2px;
+      right: -2px;
+      border-bottom: 2px solid #06B6D4;
+      border-right: 2px solid #06B6D4;
+    }
+
+    /* Slide Engine Transitions */
+    .slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      pointer-events: none;
+      transform: scale(0.97) translateY(16px);
+      transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1), transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 3rem 4rem;
+      z-index: 10;
+    }
+    .slide.active {
+      opacity: 1;
+      pointer-events: auto;
+      transform: scale(1) translateY(0);
+      z-index: 20;
+    }
+
+    /* Stagger Animations para elementos de cada slide */
+    .slide.active .stagger-1 { animation: slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.08s forwards; }
+    .slide.active .stagger-2 { animation: slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.18s forwards; }
+    .slide.active .stagger-3 { animation: slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.28s forwards; }
+    .slide.active .stagger-4 { animation: slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.38s forwards; }
+
+    .stagger-elem {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    @keyframes slideUpFade {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Barra de progresso suave */
+    #progress-fill {
+      transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Glow de gradiente sutil de fundo */
+    .ambient-glow-1 {
+      position: absolute;
+      top: 15%;
+      left: 10%;
+      width: 480px;
+      height: 480px;
+      background: radial-gradient(circle, rgba(6, 182, 212, 0.12) 0%, rgba(6, 182, 212, 0) 70%);
+      filter: blur(60px);
+      pointer-events: none;
+      z-index: 1;
+    }
+    .ambient-glow-2 {
+      position: absolute;
+      bottom: 10%;
+      right: 10%;
+      width: 520px;
+      height: 520px;
+      background: radial-gradient(circle, rgba(16, 185, 129, 0.10) 0%, rgba(16, 185, 129, 0) 70%);
+      filter: blur(70px);
+      pointer-events: none;
+      z-index: 1;
+    }
+  </style>
+</head>
+<body class="relative bg-deepBg text-slate-100 antialiased overflow-hidden select-none">
+
+  <!-- ================= CANVAS BACKGROUND VIVO ================= -->
+  <canvas id="city-mesh-canvas" class="absolute inset-0 w-full h-full z-0 pointer-events-none opacity-40"></canvas>
+  
+  <!-- Vinheta escura radial para garantir contraste cinematográfico -->
+  <div class="absolute inset-0 z-[2] pointer-events-none bg-[radial-gradient(ellipse_at_center,_rgba(7,11,25,0.35)_0%,_rgba(7,11,25,0.85)_80%,_#070B19_100%)]"></div>
+  <div class="ambient-glow-1"></div>
+  <div class="ambient-glow-2"></div>
+
+  <!-- ================= HUD SUPERIOR GLOBAL ================= -->
+  <header class="absolute top-0 left-0 right-0 z-50 flex items-center justify-between px-8 py-4 border-b border-white/5 bg-deepBg/40 backdrop-blur-md">
+    <!-- Logotipo & Status -->
+    <div class="flex items-center space-x-4">
+      <div class="flex items-center space-x-2.5">
+        <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-cyan-600 to-emerald-500 flex items-center justify-center shadow-lg shadow-cyan-500/20">
+          <svg class="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+          </svg>
+        </div>
+        <span class="font-extrabold text-lg tracking-wider text-white">AERO<span class="text-neonCyan">FLUXO</span></span>
+      </div>
+      <div class="h-4 w-px bg-white/15"></div>
+      <span class="font-mono text-xs text-slate-400 tracking-wider flex items-center gap-1.5">
+        <span class="w-2 h-2 rounded-full bg-neonGreen animate-ping"></span>
+        SISTEMA DE GESTÃO VIÁRIA AÉREA
+      </span>
+    </div>
+
+    <!-- Navegação de Slides Rápida / Mini Indicadores -->
+    <div class="hidden md:flex items-center space-x-2 bg-slate-900/60 p-1 rounded-full border border-white/10" id="dots-container">
+      <!-- Inserido dinamicamente via JS -->
+    </div>
+
+    <!-- Controles Rápidos HUD: Contador e Fullscreen -->
+    <div class="flex items-center space-x-5">
+      <div class="font-mono text-sm tracking-widest text-slate-300 font-semibold flex items-center gap-1">
+        <span id="current-slide-num" class="text-neonCyan text-base font-bold">01</span>
+        <span class="text-slate-600">/</span>
+        <span class="text-slate-500">06</span>
+      </div>
+
+      <!-- Botão Fullscreen -->
+      <button id="btn-fullscreen" title="Tela Cheia (F)" class="p-2 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300 hover:text-white transition-colors duration-200">
+        <svg id="fullscreen-icon" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Barra de Progresso Superior Discreta -->
+  <div class="absolute top-0 left-0 right-0 h-[3px] bg-slate-800/80 z-[60]">
+    <div id="progress-fill" class="h-full bg-gradient-to-r from-neonCyan via-neonGreen to-emerald-400 w-1/6 shadow-[0_0_12px_#06B6D4]"></div>
+  </div>
+
+  <!-- ================= CONTAINER DOS SLIDES ================= -->
+  <main class="relative w-full h-full z-20 flex items-center justify-center">
+
+    <!-- ================= SLIDE 1: CAPA (HERO SLIDE) ================= -->
+    <section class="slide active" id="slide-1">
+      <div class="max-w-5xl w-full text-center flex flex-col items-center">
+        
+        <!-- Badge HUD -->
+        <div class="stagger-elem stagger-1 mb-6">
+          <div class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-slate-900/80 border border-neonRed/40 text-xs font-mono tracking-wider text-slate-200 shadow-lg shadow-neonRed/10">
+            <span class="w-2.5 h-2.5 rounded-full bg-neonRed animate-pulse"></span>
+            <span class="font-semibold text-neonRed">REC</span>
+            <span class="text-slate-500">|</span>
+            <span>SISTEMA ATIVO</span>
+            <span class="text-slate-500">•</span>
+            <span class="text-neonCyan">NORDESTE, BR</span>
+          </div>
+        </div>
+
+        <!-- Título Gigante -->
+        <h1 class="stagger-elem stagger-2 text-7xl md:text-8xl lg:text-9xl font-black tracking-tight leading-none text-white drop-shadow-2xl">
+          Aero<span class="text-transparent bg-clip-text bg-gradient-to-r from-neonCyan via-teal-300 to-neonGreen">Fluxo</span>
+        </h1>
+
+        <!-- Subtítulo -->
+        <p class="stagger-elem stagger-3 mt-6 text-xl md:text-2xl lg:text-3xl font-light text-slate-300 max-w-3xl leading-relaxed">
+          A inteligência aérea que destrava as avenidas do Nordeste.
+        </p>
+
+        <!-- Três Pílulas / Tags Minimalistas com SVGs -->
+        <div class="stagger-elem stagger-4 mt-12 flex flex-wrap items-center justify-center gap-4">
+          <!-- Pílula 1 -->
+          <div class="glass-card px-5 py-3 rounded-2xl flex items-center space-x-3 text-slate-200 border border-cyan-500/20">
+            <div class="p-2 rounded-xl bg-cyan-500/10 text-neonCyan">
+              <!-- Drone Icon SVG -->
+              <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"/>
+                <path d="M3 7a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/>
+                <path d="M17 7a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/>
+                <path d="M17 17a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/>
+                <path d="M3 17a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/>
+                <path d="m5 9 4 2"/>
+                <path d="m15 11 4-2"/>
+                <path d="m5 15 4-2"/>
+                <path d="m15 13 4 2"/>
+              </svg>
+            </div>
+            <div class="text-left">
+              <div class="text-[10px] uppercase font-mono tracking-wider text-slate-400">Sensoriamento</div>
+              <div class="text-sm font-bold text-white tracking-wide">Drones Autônomos</div>
+            </div>
+          </div>
+
+          <!-- Pílula 2 -->
+          <div class="glass-card px-5 py-3 rounded-2xl flex items-center space-x-3 text-slate-200 border border-emerald-500/20">
+            <div class="p-2 rounded-xl bg-emerald-500/10 text-neonGreen">
+              <!-- 360 Camera SVG -->
+              <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/>
+                <path d="M2 12h20"/>
+              </svg>
+            </div>
+            <div class="text-left">
+              <div class="text-[10px] uppercase font-mono tracking-wider text-slate-400">Visão Panorâmica</div>
+              <div class="text-sm font-bold text-white tracking-wide">Câmeras 360°</div>
+            </div>
+          </div>
+
+          <!-- Pílula 3 -->
+          <div class="glass-card px-5 py-3 rounded-2xl flex items-center space-x-3 text-slate-200 border border-amber-500/20">
+            <div class="p-2 rounded-xl bg-amber-500/10 text-neonAmber">
+              <!-- AI Brain / Vision SVG -->
+              <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                <polyline points="3.29 7 12 12 20.71 7"/>
+                <line x1="12" y1="22" x2="12" y2="12"/>
+              </svg>
+            </div>
+            <div class="text-left">
+              <div class="text-[10px] uppercase font-mono tracking-wider text-slate-400">Processamento Edge</div>
+              <div class="text-sm font-bold text-white tracking-wide">Visão Computacional IA</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Rodapé do Hero (Dica de Navegação) -->
+        <div class="stagger-elem stagger-4 mt-12 flex items-center gap-2 text-xs font-mono text-slate-500">
+          <kbd class="px-2 py-1 rounded bg-slate-800 border border-slate-700 text-slate-300">ESPAÇO</kbd>
+          <span>ou</span>
+          <kbd class="px-2 py-1 rounded bg-slate-800 border border-slate-700 text-slate-300">→</kbd>
+          <span>para avançar o pitch</span>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ================= SLIDE 2: O PROBLEMA ================= -->
+    <section class="slide" id="slide-2">
+      <div class="max-w-6xl w-full">
+        
+        <!-- Header do Slide -->
+        <div class="text-center mb-10">
+          <div class="stagger-elem stagger-1 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-500/10 border border-neonRed/30 text-neonRed font-mono text-xs uppercase tracking-widest mb-3">
+            O Diagnóstico Urbano
+          </div>
+          <h2 class="stagger-elem stagger-2 text-5xl md:text-6xl font-black text-white tracking-tight">
+            O Trânsito Parou no Tempo
+          </h2>
+          <p class="stagger-elem stagger-3 text-lg md:text-xl text-slate-400 mt-2 font-light max-w-2xl mx-auto">
+            As cidades cresceram em ritmo acelerado, mas os semáforos continuam <span class="text-slate-200 font-medium">completamente cegos</span>.
+          </p>
+        </div>
+
+        <!-- Grid de 3 Cards com Contadores Animados -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 stagger-elem stagger-4">
+          
+          <!-- Card 1: +19 Milhões (Âmbar) -->
+          <div class="glass-card rounded-3xl p-8 border-l-4 border-l-neonAmber relative overflow-hidden group">
+            <div class="absolute -top-10 -right-10 w-32 h-32 bg-neonAmber/10 rounded-full blur-2xl group-hover:bg-neonAmber/20 transition-all duration-500"></div>
+            <div class="flex items-center justify-between mb-4">
+              <span class="font-mono text-xs font-bold uppercase tracking-wider text-neonAmber bg-neonAmber/10 px-2.5 py-1 rounded-lg">SENATRAN</span>
+              <svg class="w-6 h-6 text-neonAmber/80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.5 2.8C2.1 10.7 2 11 2 11.3V16c0 .6.4 1 1 1h2"/>
+                <circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/>
+              </svg>
+            </div>
+            
+            <div class="font-mono text-5xl lg:text-6xl font-black text-white tracking-tight">
+              +<span class="counter-number text-neonAmber" data-target="19" data-suffix=" Milhões">0</span>
+            </div>
+            <div class="text-lg font-bold text-slate-100 mt-2">Frota Ativa no Nordeste</div>
+            <p class="text-sm text-slate-400 mt-3 leading-relaxed">
+              Explosão desproporcional de carros e motocicletas disputando malhas viárias históricas e travadas que não têm espaço para expansão.
+            </p>
+          </div>
+
+          <!-- Card 2: 30 Dias / Ano (Vermelho) -->
+          <div class="glass-card rounded-3xl p-8 border-l-4 border-l-neonRed relative overflow-hidden group">
+            <div class="absolute -top-10 -right-10 w-32 h-32 bg-neonRed/10 rounded-full blur-2xl group-hover:bg-neonRed/20 transition-all duration-500"></div>
+            <div class="flex items-center justify-between mb-4">
+              <span class="font-mono text-xs font-bold uppercase tracking-wider text-neonRed bg-neonRed/10 px-2.5 py-1 rounded-lg">IBGE / IPEA</span>
+              <svg class="w-6 h-6 text-neonRed/80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+              </svg>
+            </div>
+
+            <div class="font-mono text-5xl lg:text-6xl font-black text-white tracking-tight">
+              <span class="counter-number text-neonRed" data-target="30" data-suffix=" Dias">0</span><span class="text-2xl text-slate-400 font-light">/ano</span>
+            </div>
+            <div class="text-lg font-bold text-slate-100 mt-2">Tempo Perdido em Filas</div>
+            <p class="text-sm text-slate-400 mt-3 leading-relaxed">
+              Um mês inteiro de vida subtraído de cada trabalhador por ano em engarrafamentos crônicos, gerando estresse e queda de produtividade.
+            </p>
+          </div>
+
+          <!-- Card 3: 100% Cegos (Ciano) -->
+          <div class="glass-card rounded-3xl p-8 border-l-4 border-l-neonCyan relative overflow-hidden group">
+            <div class="absolute -top-10 -right-10 w-32 h-32 bg-neonCyan/10 rounded-full blur-2xl group-hover:bg-neonCyan/20 transition-all duration-500"></div>
+            <div class="flex items-center justify-between mb-4">
+              <span class="font-mono text-xs font-bold uppercase tracking-wider text-neonCyan bg-neonCyan/10 px-2.5 py-1 rounded-lg">INFRAESTRUTURA</span>
+              <svg class="w-6 h-6 text-neonCyan/80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><line x1="1" y1="1" x2="23" y2="23"/>
+              </svg>
+            </div>
+
+            <div class="font-mono text-5xl lg:text-6xl font-black text-white tracking-tight">
+              <span class="counter-number text-neonCyan" data-target="100" data-suffix="%">0</span> <span class="text-3xl text-slate-300 font-bold">Cegos</span>
+            </div>
+            <div class="text-lg font-bold text-slate-100 mt-2">Semáforos de Tempo Fixo</div>
+            <p class="text-sm text-slate-400 mt-3 leading-relaxed">
+              Sinais abertos para vias desertas enquanto a avenida principal colapsa. Demora de mais de 30 minutos apenas para saber de colisões na via.
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ================= SLIDE 3: A SOLUÇÃO ================= -->
+    <section class="slide" id="slide-3">
+      <div class="max-w-6xl w-full">
+        
+        <!-- Header do Slide -->
+        <div class="text-center mb-8">
+          <div class="stagger-elem stagger-1 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-neonGreen/30 text-neonGreen font-mono text-xs uppercase tracking-widest mb-3">
+            A Arquitetura AeroFluxo
+          </div>
+          <h2 class="stagger-elem stagger-2 text-5xl md:text-6xl font-black text-white tracking-tight">
+            Olhos no Céu, Fluidez no Asfalto
+          </h2>
+          <p class="stagger-elem stagger-3 text-lg text-slate-300 font-light mt-2 max-w-2xl mx-auto">
+            Integração em 3 etapas ponta a ponta: do sensor aéreo à liberação do semáforo em milissegundos.
+          </p>
+        </div>
+
+        <!-- 3 Etapas Conectadas Horizontalmente -->
+        <div class="stagger-elem stagger-4 grid grid-cols-1 md:grid-cols-3 gap-6 relative">
+          
+          <!-- Linha conectora (SVG) em telas maiores -->
+          <div class="hidden md:block absolute top-1/2 left-[18%] right-[18%] h-0.5 bg-gradient-to-r from-neonCyan via-neonGreen to-emerald-400 -translate-y-8 z-0 opacity-40"></div>
+
+          <!-- Etapa 1 -->
+          <div class="glass-card rounded-2xl p-6 relative z-10 border border-white/10 hover:border-neonCyan/50">
+            <div class="w-12 h-12 rounded-xl bg-neonCyan/10 border border-neonCyan/30 flex items-center justify-center text-neonCyan font-mono font-bold text-lg mb-4 shadow-md shadow-neonCyan/10">
+              01
+            </div>
+            <h3 class="text-xl font-bold text-white mb-2 flex items-center gap-2">
+              Captura Híbrida
+            </h3>
+            <p class="text-sm text-slate-400 leading-relaxed">
+              Drones autônomos patrulham os horários de pico + câmeras olho-de-peixe 360° instaladas nos cruzamentos mais críticos da capital.
+            </p>
+            <div class="mt-4 pt-3 border-t border-white/5 font-mono text-[11px] text-neonCyan flex items-center gap-1.5">
+              <span>●</span> COBERTURA PANORÂMICA TOTAL
+            </div>
+          </div>
+
+          <!-- Etapa 2 -->
+          <div class="glass-card rounded-2xl p-6 relative z-10 border border-white/10 hover:border-neonGreen/50">
+            <div class="w-12 h-12 rounded-xl bg-neonGreen/10 border border-neonGreen/30 flex items-center justify-center text-neonGreen font-mono font-bold text-lg mb-4 shadow-md shadow-neonGreen/10">
+              02
+            </div>
+            <h3 class="text-xl font-bold text-white mb-2 flex items-center gap-2">
+              Visão Computacional
+            </h3>
+            <p class="text-sm text-slate-400 leading-relaxed">
+              Algoritmos de IA detectam e contam carros, motos e ônibus em tempo real, calculando a densidade da fila e acidentes em segundos.
+            </p>
+            <div class="mt-4 pt-3 border-t border-white/5 font-mono text-[11px] text-neonGreen flex items-center gap-1.5">
+              <span>●</span> PROCESSAMENTO LOCAL (EDGE AI)
+            </div>
+          </div>
+
+          <!-- Etapa 3 -->
+          <div class="glass-card rounded-2xl p-6 relative z-10 border border-white/10 hover:border-emerald-400/50">
+            <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 font-mono font-bold text-lg mb-4 shadow-md shadow-emerald-500/10">
+              03
+            </div>
+            <h3 class="text-xl font-bold text-white mb-2 flex items-center gap-2">
+              Onda Verde Dinâmica
+            </h3>
+            <p class="text-sm text-slate-400 leading-relaxed">
+              O semáforo abre onde o volume é urgente, sincronizando as vias seguintes e enviando rota de desvio direto ao celular dos agentes.
+            </p>
+            <div class="mt-4 pt-3 border-t border-white/5 font-mono text-[11px] text-emerald-400 flex items-center gap-1.5">
+              <span>●</span> RESPOSTA EM TEMPO REAL (< 300ms)
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Componente Interativo: Simulador de Cruzamento -->
+        <div class="stagger-elem stagger-4 mt-8 glass-panel p-5 rounded-2xl border border-neonCyan/20 flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl">
+          <div class="flex items-center gap-4">
+            <div id="sim-light-indicator" class="w-10 h-10 rounded-full bg-neonRed flex items-center justify-center shadow-[0_0_20px_#EF4444] transition-all duration-500">
+              <div class="w-4 h-4 rounded-full bg-white/70 animate-ping"></div>
+            </div>
+            <div>
+              <div class="text-xs font-mono uppercase text-slate-400 tracking-wider">Telemetria do Cruzamento Central</div>
+              <div id="sim-status-text" class="text-base font-bold text-neonRed font-mono transition-colors duration-300">
+                Fila Crítica: 450m (Sinal Vermelho Fixo)
+              </div>
+            </div>
+          </div>
+
+          <!-- Toggle Button -->
+          <button id="toggle-sim-btn" class="px-6 py-3 rounded-xl bg-gradient-to-r from-neonCyan to-neonGreen text-slate-950 font-bold text-sm tracking-wide shadow-lg shadow-cyan-500/25 hover:shadow-cyan-500/40 hover:scale-105 active:scale-95 transition-all duration-200 flex items-center gap-2.5">
+            <svg class="w-5 h-5 text-slate-950" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <polygon points="5 3 19 12 5 21 5 3"/>
+            </svg>
+            <span id="btn-sim-label">Simular IA no Cruzamento</span>
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ================= SLIDE 4: DIFERENCIAIS E INOVAÇÃO ================= -->
+    <section class="slide" id="slide-4">
+      <div class="max-w-6xl w-full">
+        
+        <!-- Header do Slide -->
+        <div class="text-center mb-10">
+          <div class="stagger-elem stagger-1 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-neonCyan/30 text-neonCyan font-mono text-xs uppercase tracking-widest mb-3">
+            Vantagem Competitiva
+          </div>
+          <h2 class="stagger-elem stagger-2 text-5xl md:text-6xl font-black text-white tracking-tight">
+            A Revolução Frente ao Tradicional
+          </h2>
+          <p class="stagger-elem stagger-3 text-lg md:text-xl text-slate-400 mt-2 font-light max-w-2xl mx-auto">
+            Por que as prefeituras não precisam mais quebrar asfalto nem gastar milhões em obras pesadas.
+          </p>
+        </div>
+
+        <!-- 3 Pilares Comparativos de Inovação -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 stagger-elem stagger-4">
+          
+          <!-- Pilar 1 -->
+          <div class="glass-card rounded-3xl p-7 border-t-4 border-t-neonCyan relative group">
+            <div class="w-14 h-14 rounded-2xl bg-cyan-500/10 flex items-center justify-center text-neonCyan mb-5 border border-cyan-500/20">
+              <!-- Drone Coverage Icon -->
+              <svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="3"/>
+                <circle cx="12" cy="12" r="8" stroke-dasharray="2 2"/>
+                <line x1="12" y1="2" x2="12" y2="4"/>
+                <line x1="12" y1="20" x2="12" y2="22"/>
+                <line x1="2" y1="12" x2="4" y2="12"/>
+                <line x1="20" y1="12" x2="22" y2="12"/>
+              </svg>
+            </div>
+            <div class="font-mono text-xs text-neonCyan font-bold uppercase tracking-wider mb-1">Flexibilidade Radical</div>
+            <h3 class="text-2xl font-bold text-white mb-3">
+              1 Drone = 20 Postes
+            </h3>
+            <p class="text-sm text-slate-400 leading-relaxed">
+              Sem quebrar calçadas para passar cabos e fibra. O drone opera a 100 metros de altitude, cobrindo múltiplos quarteirões e mudando de bairro conforme o fluxo de pico.
+            </p>
+            <div class="mt-6 flex items-center gap-2 text-xs font-mono text-slate-400 bg-white/5 p-2 rounded-lg">
+              <span class="text-neonCyan font-bold">✓</span> Implementação em 48 horas
+            </div>
+          </div>
+
+          <!-- Pilar 2 -->
+          <div class="glass-card rounded-3xl p-7 border-t-4 border-t-neonAmber relative group">
+            <div class="w-14 h-14 rounded-2xl bg-amber-500/10 flex items-center justify-center text-neonAmber mb-5 border border-amber-500/20">
+              <!-- AI Neural Calibration Icon -->
+              <svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+              </svg>
+            </div>
+            <div class="font-mono text-xs text-neonAmber font-bold uppercase tracking-wider mb-1">Modelos Regionais</div>
+            <h3 class="text-2xl font-bold text-white mb-3">
+              IA Treinada no Nordeste
+            </h3>
+            <p class="text-sm text-slate-400 leading-relaxed">
+              Algoritmos calibrados especificamente para a realidade local: altíssima densidade de motocicletas nos corredores, faixas de ônibus compartilhadas e alerta de vias alagadas.
+            </p>
+            <div class="mt-6 flex items-center gap-2 text-xs font-mono text-slate-400 bg-white/5 p-2 rounded-lg">
+              <span class="text-neonAmber font-bold">✓</span> 98.4% de acurácia de detecção
+            </div>
+          </div>
+
+          <!-- Pilar 3 -->
+          <div class="glass-card rounded-3xl p-7 border-t-4 border-t-neonGreen relative group">
+            <div class="w-14 h-14 rounded-2xl bg-emerald-500/10 flex items-center justify-center text-neonGreen mb-5 border border-emerald-500/20">
+              <!-- Shield Privacy Legal Icon -->
+              <svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              </svg>
+            </div>
+            <div class="font-mono text-xs text-neonGreen font-bold uppercase tracking-wider mb-1">Conformidade e Ética</div>
+            <h3 class="text-2xl font-bold text-white mb-3">
+              100% Seguro e Legal
+            </h3>
+            <p class="text-sm text-slate-400 leading-relaxed">
+              Total conformidade com LGPD e ANAC. O sistema não monitora nem armazena rostos de cidadãos: cada veículo é convertido imediatamente em vetor matemático anônimo.
+            </p>
+            <div class="mt-6 flex items-center gap-2 text-xs font-mono text-slate-400 bg-white/5 p-2 rounded-lg">
+              <span class="text-neonGreen font-bold">✓</span> Privacidade por Design (Privacy-First)
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ================= SLIDE 5: MODELO DE NEGÓCIO ================= -->
+    <section class="slide" id="slide-5">
+      <div class="max-w-6xl w-full">
+        
+        <!-- Header do Slide -->
+        <div class="text-center mb-10">
+          <div class="stagger-elem stagger-1 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-neonGreen/30 text-neonGreen font-mono text-xs uppercase tracking-widest mb-3">
+            Monetização e Escalaridade
+          </div>
+          <h2 class="stagger-elem stagger-2 text-5xl md:text-6xl font-black text-white tracking-tight">
+            Sustentabilidade Financeira
+          </h2>
+          <p class="stagger-elem stagger-3 text-lg md:text-xl text-slate-400 mt-2 font-light max-w-2xl mx-auto">
+            Modelo de negócio diversificado com receitas recorrentes e alta previsibilidade.
+          </p>
+        </div>
+
+        <!-- 3 Cards de Receita -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 stagger-elem stagger-4">
+          
+          <!-- Card B2G -->
+          <div class="glass-card rounded-3xl p-8 border border-white/10 relative overflow-hidden flex flex-col justify-between">
+            <div class="absolute top-0 right-0 w-24 h-24 bg-cyan-500/10 rounded-bl-full pointer-events-none"></div>
+            <div>
+              <div class="w-12 h-12 rounded-xl bg-cyan-500/15 border border-neonCyan/30 flex items-center justify-center text-neonCyan mb-6">
+                <!-- Government Building SVG -->
+                <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M3 21h18M3 10h18M5 10v11M9 10v11M15 10v11M19 10v11M12 2l10 5H2l10-5z"/>
+                </svg>
+              </div>
+              <span class="font-mono text-xs uppercase tracking-wider text-neonCyan font-bold">B2G • Setor Público</span>
+              <h3 class="text-2xl font-bold text-white mt-1 mb-3">Prefeituras (SaaS)</h3>
+              <p class="text-sm text-slate-400 leading-relaxed">
+                Assinatura mensal para monitoramento contínuo das principais avenidas. Zero custo de aquisição de equipamentos para a cidade — nós cuidamos de toda a frota de drones.
+              </p>
+            </div>
+            <div class="mt-8 pt-4 border-t border-white/10 flex items-center justify-between text-xs font-mono">
+              <span class="text-slate-400">Modelo</span>
+              <span class="text-neonCyan font-bold">Assinatura Mensal Recorrente</span>
+            </div>
+          </div>
+
+          <!-- Card B2B -->
+          <div class="glass-card rounded-3xl p-8 border border-white/10 relative overflow-hidden flex flex-col justify-between">
+            <div class="absolute top-0 right-0 w-24 h-24 bg-amber-500/10 rounded-bl-full pointer-events-none"></div>
+            <div>
+              <div class="w-12 h-12 rounded-xl bg-amber-500/15 border border-neonAmber/30 flex items-center justify-center text-neonAmber mb-6">
+                <!-- Stadium / Events SVG -->
+                <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
+                  <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+                </svg>
+              </div>
+              <span class="font-mono text-xs uppercase tracking-wider text-neonAmber font-bold">B2B • Privado & Eventos</span>
+              <h3 class="text-2xl font-bold text-white mt-1 mb-3">Polos e Grandes Eventos</h3>
+              <p class="text-sm text-slate-400 leading-relaxed">
+                Operação sob demanda para Shoppings, Estádios de Futebol e megafestivais tradicionais nordestinos (São João de Caruaru e Campina Grande, Carnaval de Salvador e Recife).
+              </p>
+            </div>
+            <div class="mt-8 pt-4 border-t border-white/10 flex items-center justify-between text-xs font-mono">
+              <span class="text-slate-400">Modelo</span>
+              <span class="text-neonAmber font-bold">Por Evento / Diária Operacional</span>
+            </div>
+          </div>
+
+          <!-- Card Dados -->
+          <div class="glass-card rounded-3xl p-8 border border-white/10 relative overflow-hidden flex flex-col justify-between">
+            <div class="absolute top-0 right-0 w-24 h-24 bg-emerald-500/10 rounded-bl-full pointer-events-none"></div>
+            <div>
+              <div class="w-12 h-12 rounded-xl bg-emerald-500/15 border border-neonGreen/30 flex items-center justify-center text-neonGreen mb-6">
+                <!-- Data Analytics / Bar Chart SVG -->
+                <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M18 20V10M12 20V4M6 20v-6"/>
+                </svg>
+              </div>
+              <span class="font-mono text-xs uppercase tracking-wider text-neonGreen font-bold">DaaS • Inteligência de Dados</span>
+              <h3 class="text-2xl font-bold text-white mt-1 mb-3">Inteligência Logística</h3>
+              <p class="text-sm text-slate-400 leading-relaxed">
+                Relatórios estatísticos anônimos e APIs de velocidade média real para empresas de delivery, frotistas, transportadoras e planejamento de mídia exterior (Out-of-Home).
+              </p>
+            </div>
+            <div class="mt-8 pt-4 border-t border-white/10 flex items-center justify-between text-xs font-mono">
+              <span class="text-slate-400">Modelo</span>
+              <span class="text-neonGreen font-bold">Licença de API e Relatórios</span>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ================= SLIDE 6: IMPACTO E ENCERRAMENTO ================= -->
+    <section class="slide" id="slide-6">
+      <div class="max-w-5xl w-full text-center flex flex-col items-center">
+        
+        <!-- Header do Slide -->
+        <div class="stagger-elem stagger-1 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-neonGreen/30 text-neonGreen font-mono text-xs uppercase tracking-widest mb-3">
+          Transformação Real
+        </div>
+        
+        <h2 class="stagger-elem stagger-2 text-5xl md:text-6xl lg:text-7xl font-black text-white tracking-tight">
+          Devolvendo Tempo de Vida às Pessoas
+        </h2>
+
+        <!-- 3 Métricas Rápidas de Impacto -->
+        <div class="stagger-elem stagger-3 mt-10 grid grid-cols-1 md:grid-cols-3 gap-6 w-full">
+          
+          <div class="glass-card p-6 rounded-3xl border border-white/10">
+            <div class="font-mono text-5xl lg:text-6xl font-black text-neonGreen">
+              -<span class="counter-number" data-target="25" data-suffix="%">0</span>
+            </div>
+            <div class="text-slate-200 font-bold mt-2">Menos Espera no Trânsito</div>
+            <p class="text-xs text-slate-400 mt-1">Gargalos desfeitos antes de virarem nós</p>
+          </div>
+
+          <div class="glass-card p-6 rounded-3xl border border-white/10">
+            <div class="font-mono text-5xl lg:text-6xl font-black text-neonCyan">
+              <span class="counter-number" data-target="3" data-suffix="x">0</span>
+            </div>
+            <div class="text-slate-200 font-bold mt-2">Agilidade no Resgate</div>
+            <p class="text-xs text-slate-400 mt-1">SAMU e Bombeiros alertados no 1º minuto</p>
+          </div>
+
+          <div class="glass-card p-6 rounded-3xl border border-white/10">
+            <div class="font-mono text-5xl lg:text-6xl font-black text-neonAmber">
+              -CO₂
+            </div>
+            <div class="text-slate-200 font-bold mt-2">Menos Emissões Tóxicas</div>
+            <p class="text-xs text-slate-400 mt-1">Fim dos motores ligados à toa na marcha lenta</p>
+          </div>
+
+        </div>
+
+        <!-- Frase de Impacto Marcante -->
+        <div class="stagger-elem stagger-4 mt-12 p-8 rounded-3xl glass-panel border border-neonCyan/30 max-w-3xl">
+          <blockquote class="text-2xl md:text-3xl font-medium text-white italic leading-snug">
+            “Não vendemos drones. Entregamos cidades que se movem de forma inteligente.”
+          </blockquote>
+          <div class="mt-4 font-mono text-xs uppercase tracking-widest text-neonCyan font-bold">
+            Equipe AeroFluxo • 9º Ano
+          </div>
+        </div>
+
+        <!-- Call to Action / Encerramento -->
+        <div class="stagger-elem stagger-4 mt-8">
+          <div class="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-slate-900 border border-emerald-400/40 text-emerald-300 font-mono text-sm tracking-wider shadow-lg shadow-emerald-500/10">
+            <span class="w-2.5 h-2.5 rounded-full bg-neonGreen animate-pulse"></span>
+            <span>Obrigado! • Aberto para Perguntas da Banca</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ================= BARRA DE CONTROLE INFERIOR ================= -->
+  <footer class="absolute bottom-0 left-0 right-0 z-50 flex items-center justify-between px-8 py-4 bg-deepBg/50 backdrop-blur-md border-t border-white/5">
+    
+    <!-- Atalhos de Teclado -->
+    <div class="hidden sm:flex items-center space-x-3 text-xs font-mono text-slate-400">
+      <span class="text-slate-500">Navegação:</span>
+      <span class="flex items-center gap-1"><kbd class="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 text-slate-300">←</kbd> Anterior</span>
+      <span class="flex items-center gap-1"><kbd class="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 text-slate-300">→</kbd> Próximo</span>
+      <span class="flex items-center gap-1"><kbd class="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 text-slate-300">F</kbd> Tela Cheia</span>
+    </div>
+
+    <!-- Botões Discretos de Navegação -->
+    <div class="flex items-center space-x-3 ml-auto">
+      <button id="btn-prev" class="px-4 py-2 rounded-xl bg-slate-800/80 hover:bg-slate-700 border border-white/10 text-slate-200 text-sm font-medium transition-all flex items-center gap-2 disabled:opacity-30 disabled:pointer-events-none">
+        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="15 18 9 12 15 6"/>
+        </svg>
+        <span class="hidden md:inline">Anterior</span>
+      </button>
+
+      <button id="btn-next" class="px-5 py-2 rounded-xl bg-gradient-to-r from-cyan-600 to-emerald-600 hover:from-cyan-500 hover:to-emerald-500 text-white text-sm font-bold shadow-lg shadow-cyan-600/20 transition-all flex items-center gap-2 disabled:opacity-30 disabled:pointer-events-none">
+        <span>Avançar</span>
+        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="9 18 15 12 9 6"/>
+        </svg>
+      </button>
+    </div>
+
+  </footer>
+
+  <!-- ================= SCRIPTS ================= -->
+  <script>
+    /* =================================================================
+       1. CANVAS BACKGROUND: SIMULAÇÃO DE MALHA VIÁRIA & VISÃO COMPUTACIONAL
+       ================================================================= */
+    const canvas = document.getElementById('city-mesh-canvas');
+    const ctx = canvas.getContext('2d');
+
+    let width, height;
+    function resizeCanvas() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    // Definição da malha viária (ruas horizontais e verticais)
+    const roads = {
+      horizontal: [],
+      vertical: []
+    };
+
+    function setupRoads() {
+      roads.horizontal = [];
+      roads.vertical = [];
+      const numH = Math.max(4, Math.floor(height / 180));
+      const numV = Math.max(6, Math.floor(width / 220));
+
+      for (let i = 1; i <= numH; i++) {
+        roads.horizontal.push((height / (numH + 1)) * i);
+      }
+      for (let i = 1; i <= numV; i++) {
+        roads.vertical.push((width / (numV + 1)) * i);
+      }
+    }
+    setupRoads();
+    window.addEventListener('resize', setupRoads);
+
+    // Veículos em movimento
+    class Vehicle {
+      constructor() {
+        this.reset();
+      }
+
+      reset() {
+        this.isH = Math.random() > 0.5;
+        this.speed = (Math.random() * 1.8 + 1.2) * (Math.random() > 0.5 ? 1 : -1);
+        this.type = Math.random() > 0.6 ? 'MOTO' : (Math.random() > 0.25 ? 'CARRO' : 'ÔNIBUS');
+        this.color = this.type === 'MOTO' ? '#F59E0B' : (this.type === 'ÔNIBUS' ? '#10B981' : '#06B6D4');
+        this.speedKmH = Math.floor(Math.abs(this.speed) * 22 + 25);
+        this.confidence = Math.floor(Math.random() * 8 + 92);
+        this.hasBox = Math.random() > 0.65; // Apenas alguns mostram Bounding Box HUD para elegância
+
+        if (this.isH) {
+          const yIdx = Math.floor(Math.random() * roads.horizontal.length);
+          this.y = roads.horizontal[yIdx] + (Math.random() * 16 - 8);
+          this.x = this.speed > 0 ? -40 : width + 40;
+        } else {
+          const xIdx = Math.floor(Math.random() * roads.vertical.length);
+          this.x = roads.vertical[xIdx] + (Math.random() * 16 - 8);
+          this.y = this.speed > 0 ? -40 : height + 40;
+        }
+
+        this.length = this.type === 'ÔNIBUS' ? 24 : (this.type === 'CARRO' ? 14 : 7);
+        this.width = this.type === 'MOTO' ? 4 : 7;
+      }
+
+      update() {
+        if (this.isH) {
+          this.x += this.speed;
+          if (this.speed > 0 && this.x > width + 50) this.reset();
+          if (this.speed < 0 && this.x < -50) this.reset();
+        } else {
+          this.y += this.speed;
+          if (this.speed > 0 && this.y > height + 50) this.reset();
+          if (this.speed < 0 && this.y < -50) this.reset();
+        }
+      }
+
+      draw(ctx) {
+        ctx.save();
+        ctx.translate(this.x, this.y);
+
+        // Orientação do veículo
+        if (this.isH) {
+          if (this.speed < 0) ctx.rotate(Math.PI);
+        } else {
+          ctx.rotate(this.speed > 0 ? Math.PI / 2 : -Math.PI / 2);
+        }
+
+        // Ponto luminoso do veículo com rastro suave
+        ctx.shadowBlur = 10;
+        ctx.shadowColor = this.color;
+        ctx.fillStyle = this.color;
+        ctx.fillRect(-this.length / 2, -this.width / 2, this.length, this.width);
+
+        // Luz dos faróis
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+        ctx.fillRect(this.length / 2 - 2, -this.width / 2 + 1, 2, this.width - 2);
+
+        ctx.restore();
+
+        // Bounding Box Estilo Visão Computacional
+        if (this.hasBox) {
+          const boxW = this.length + 22;
+          const boxH = this.width + 20;
+          const bx = this.x - boxW / 2;
+          const by = this.y - boxH / 2;
+
+          ctx.save();
+          ctx.strokeStyle = this.color;
+          ctx.lineWidth = 1;
+          ctx.setLineDash([4, 3]);
+          ctx.strokeRect(bx, by, boxW, boxH);
+          ctx.setLineDash([]);
+
+          // Cantoneiras sólidas
+          const corner = 4;
+          ctx.beginPath();
+          // Top Left
+          ctx.moveTo(bx, by + corner); ctx.lineTo(bx, by); ctx.lineTo(bx + corner, by);
+          // Top Right
+          ctx.moveTo(bx + boxW - corner, by); ctx.lineTo(bx + boxW, by); ctx.lineTo(bx + boxW, by + corner);
+          // Bottom Left
+          ctx.moveTo(bx, by + boxH - corner); ctx.lineTo(bx, by + boxH); ctx.lineTo(bx + corner, by + boxH);
+          // Bottom Right
+          ctx.moveTo(bx + boxW - corner, by + boxH); ctx.lineTo(bx + boxW, by + boxH); ctx.lineTo(bx + boxW, by + boxH - corner);
+          ctx.stroke();
+
+          // Label da IA (Tag de detecção)
+          ctx.font = '8px "JetBrains Mono", monospace';
+          ctx.fillStyle = this.color;
+          const text = `[${this.type} ${this.speedKmH}km/h ${this.confidence}%]`;
+          ctx.fillText(text, bx, by - 4);
+
+          ctx.restore();
+        }
+      }
+    }
+
+    const vehicles = Array.from({ length: 45 }, () => new Vehicle());
+
+    // Scanner / Drone Radar aéreo
+    let radarAngle = 0;
+
+    function renderCanvas() {
+      ctx.clearRect(0, 0, width, height);
+
+      // Desenhar malha de vias urbanas
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.04)';
+      ctx.lineWidth = 26;
+      ctx.lineCap = 'round';
+
+      // Linhas de asfalto
+      roads.horizontal.forEach(y => {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(width, y);
+        ctx.stroke();
+      });
+      roads.vertical.forEach(x => {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, height);
+        ctx.stroke();
+      });
+
+      // Linhas pontilhadas do centro das faixas
+      ctx.strokeStyle = 'rgba(6, 182, 212, 0.12)';
+      ctx.lineWidth = 1;
+      ctx.setLineDash([8, 12]);
+      roads.horizontal.forEach(y => {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(width, y);
+        ctx.stroke();
+      });
+      roads.vertical.forEach(x => {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, height);
+        ctx.stroke();
+      });
+      ctx.setLineDash([]);
+
+      // Cruzamentos com nós de sensores inteligentes (pontos de luz pulsante)
+      roads.horizontal.forEach(y => {
+        roads.vertical.forEach(x => {
+          ctx.beginPath();
+          ctx.arc(x, y, 3, 0, Math.PI * 2);
+          ctx.fillStyle = 'rgba(16, 185, 129, 0.4)';
+          ctx.fill();
+
+          ctx.beginPath();
+          ctx.arc(x, y, 9, 0, Math.PI * 2);
+          ctx.strokeStyle = 'rgba(16, 185, 129, 0.15)';
+          ctx.stroke();
+        });
+      });
+
+      // Atualizar e desenhar veículos
+      vehicles.forEach(v => {
+        v.update();
+        v.draw(ctx);
+      });
+
+      // Efeito de Varredura de Drone (HUD Top-Down) no canto superior direito
+      radarAngle += 0.015;
+      const rx = width * 0.82;
+      const ry = height * 0.28;
+      const radius = 110;
+
+      ctx.save();
+      ctx.strokeStyle = 'rgba(6, 182, 212, 0.12)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.arc(rx, ry, radius, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.arc(rx, ry, radius * 0.5, 0, Math.PI * 2);
+      ctx.stroke();
+
+      // Feixe do radar
+      ctx.beginPath();
+      ctx.moveTo(rx, ry);
+      ctx.arc(rx, ry, radius, radarAngle, radarAngle + 0.35);
+      ctx.closePath();
+      ctx.fillStyle = 'rgba(6, 182, 212, 0.04)';
+      ctx.fill();
+
+      // Marcador de drone central
+      ctx.fillStyle = '#06B6D4';
+      ctx.beginPath();
+      ctx.arc(rx, ry, 3.5, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.font = '8px "JetBrains Mono"';
+      ctx.fillText('DRONE-ALPHA // ALT: 100M', rx - 48, ry + radius + 16);
+      ctx.restore();
+
+      requestAnimationFrame(renderCanvas);
+    }
+    renderCanvas();
+
+
+    /* =================================================================
+       2. GERENCIADOR DE SLIDES, ANIMAÇÕES & ATALHOS DE TECLADO
+       ================================================================= */
+    const slides = document.querySelectorAll('.slide');
+    const totalSlides = slides.length;
+    let currentSlide = 0;
+
+    const progressFill = document.getElementById('progress-fill');
+    const currentSlideNum = document.getElementById('current-slide-num');
+    const btnPrev = document.getElementById('btn-prev');
+    const btnNext = document.getElementById('btn-next');
+    const dotsContainer = document.getElementById('dots-container');
+
+    // Gerar mini-dots de navegação no topo
+    slides.forEach((_, idx) => {
+      const dot = document.createElement('button');
+      dot.className = `w-2 h-2 rounded-full transition-all duration-300 ${idx === 0 ? 'w-6 bg-neonCyan' : 'bg-white/20 hover:bg-white/40'}`;
+      dot.title = `Ir para slide ${idx + 1}`;
+      dot.addEventListener('click', () => goToSlide(idx));
+      dotsContainer.appendChild(dot);
+    });
+
+    function updateSlideUI() {
+      slides.forEach((slide, idx) => {
+        if (idx === currentSlide) {
+          slide.classList.add('active');
+        } else {
+          slide.classList.remove('active');
+        }
+      });
+
+      // Atualizar números e barra de progresso
+      currentSlideNum.textContent = String(currentSlide + 1).padStart(2, '0');
+      const progressPercent = ((currentSlide + 1) / totalSlides) * 100;
+      progressFill.style.width = `${progressPercent}%`;
+
+      // Atualizar botões
+      btnPrev.disabled = currentSlide === 0;
+      btnNext.disabled = currentSlide === totalSlides - 1;
+      btnNext.innerHTML = currentSlide === totalSlides - 1 
+        ? `<span>Fim</span>` 
+        : `<span>Avançar</span><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>`;
+
+      // Atualizar mini-dots
+      Array.from(dotsContainer.children).forEach((dot, idx) => {
+        if (idx === currentSlide) {
+          dot.className = 'w-6 h-2 rounded-full bg-neonCyan transition-all duration-300 shadow-[0_0_8px_#06B6D4]';
+        } else {
+          dot.className = 'w-2 h-2 rounded-full bg-white/20 hover:bg-white/40 transition-all duration-300';
+        }
+      });
+
+      // Disparar animação de contagem caso o slide possua números
+      runCounters(slides[currentSlide]);
+    }
+
+    function nextSlide() {
+      if (currentSlide < totalSlides - 1) {
+        currentSlide++;
+        updateSlideUI();
+      }
+    }
+
+    function prevSlide() {
+      if (currentSlide > 0) {
+        currentSlide--;
+        updateSlideUI();
+      }
+    }
+
+    function goToSlide(idx) {
+      if (idx >= 0 && idx < totalSlides) {
+        currentSlide = idx;
+        updateSlideUI();
+      }
+    }
+
+    btnNext.addEventListener('click', nextSlide);
+    btnPrev.addEventListener('click', prevSlide);
+
+    // Navegação via teclado
+    window.addEventListener('keydown', (e) => {
+      // Ignorar se estiver interagindo com campos (não há, mas boa prática)
+      if (['ArrowRight', 'Space', 'PageDown'].includes(e.code)) {
+        e.preventDefault();
+        nextSlide();
+      } else if (['ArrowLeft', 'PageUp'].includes(e.code)) {
+        e.preventDefault();
+        prevSlide();
+      } else if (e.code === 'KeyF') {
+        toggleFullscreen();
+      } else if (e.code === 'Home') {
+        goToSlide(0);
+      } else if (e.code === 'End') {
+        goToSlide(totalSlides - 1);
+      }
+    });
+
+
+    /* =================================================================
+       3. ANIMAÇÃO DE CONTAGEM PROGRESSIVA (COUNT-UP)
+       ================================================================= */
+    function runCounters(slideElement) {
+      const counters = slideElement.querySelectorAll('.counter-number');
+      counters.forEach(counter => {
+        const target = parseInt(counter.getAttribute('data-target'), 10);
+        const suffix = counter.getAttribute('data-suffix') || '';
+        const duration = 1200; // ms
+        const startTime = performance.now();
+
+        function updateCount(now) {
+          const elapsed = now - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+          // Easing: easeOutExpo
+          const easeProgress = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+          const currentVal = Math.floor(easeProgress * target);
+
+          counter.textContent = currentVal + suffix;
+
+          if (progress < 1) {
+            requestAnimationFrame(updateCount);
+          } else {
+            counter.textContent = target + suffix;
+          }
+        }
+
+        requestAnimationFrame(updateCount);
+      });
+    }
+
+    // Disparar no primeiro slide ao carregar
+    runCounters(slides[0]);
+
+
+    /* =================================================================
+       4. SIMULADOR DE CRUZAMENTO INTERATIVO (SLIDE 3)
+       ================================================================= */
+    const toggleSimBtn = document.getElementById('toggle-sim-btn');
+    const simLightIndicator = document.getElementById('sim-light-indicator');
+    const simStatusText = document.getElementById('sim-status-text');
+    const btnSimLabel = document.getElementById('btn-sim-label');
+
+    let isAiActive = false;
+
+    if (toggleSimBtn) {
+      toggleSimBtn.addEventListener('click', () => {
+        isAiActive = !isAiActive;
+
+        if (isAiActive) {
+          // Estado: IA Ativada / Onda Verde
+          simLightIndicator.className = 'w-10 h-10 rounded-full bg-neonGreen flex items-center justify-center shadow-[0_0_25px_#10B981] transition-all duration-500';
+          simStatusText.textContent = 'Fluxo Liberado: Onda Verde Ativa (-40% espera)';
+          simStatusText.className = 'text-base font-bold text-neonGreen font-mono transition-colors duration-300';
+          btnSimLabel.textContent = 'Resetar para Semáforo Cego';
+          toggleSimBtn.classList.replace('from-neonCyan', 'from-emerald-500');
+          toggleSimBtn.classList.replace('to-neonGreen', 'to-teal-600');
+        } else {
+          // Estado: Semáforo Fixo / Fila
+          simLightIndicator.className = 'w-10 h-10 rounded-full bg-neonRed flex items-center justify-center shadow-[0_0_20px_#EF4444] transition-all duration-500';
+          simStatusText.textContent = 'Fila Crítica: 450m (Sinal Vermelho Fixo)';
+          simStatusText.className = 'text-base font-bold text-neonRed font-mono transition-colors duration-300';
+          btnSimLabel.textContent = 'Simular IA no Cruzamento';
+          toggleSimBtn.classList.replace('from-emerald-500', 'from-neonCyan');
+          toggleSimBtn.classList.replace('to-teal-600', 'to-neonGreen');
+        }
+      });
+    }
+
+
+    /* =================================================================
+       5. FULLSCREEN API
+       ================================================================= */
+    const btnFullscreen = document.getElementById('btn-fullscreen');
+    const fullscreenIcon = document.getElementById('fullscreen-icon');
+
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(err => {
+          console.warn(`Erro ao ativar tela cheia: ${err.message}`);
+        });
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        }
+      }
+    }
+
+    btnFullscreen.addEventListener('click', toggleFullscreen);
+
+    document.addEventListener('fullscreenchange', () => {
+      if (document.fullscreenElement) {
+        fullscreenIcon.innerHTML = `
+          <path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"/>
+        `;
+        btnFullscreen.title = 'Sair da Tela Cheia (F)';
+      } else {
+        fullscreenIcon.innerHTML = `
+          <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
+        `;
+        btnFullscreen.title = 'Tela Cheia (F)';
+      }
+    });
+
+  </script>
+</body>
+</html>
